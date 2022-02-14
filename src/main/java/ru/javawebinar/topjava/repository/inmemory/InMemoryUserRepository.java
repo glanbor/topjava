@@ -22,9 +22,9 @@ public class InMemoryUserRepository implements UserRepository {
 
     {
         save(new User("User1", "user1@mail.ru", "user1", Role.USER));
+        save(new User("Admin", "admin@mail.ru", "admin", Role.ADMIN));
         save(new User("User2", "user2@mail.ru", "user2", Role.USER));
         save(new User("User3", "user3@mail.ru", "user3", Role.USER));
-        save(new User("Admin1", "admon1@mail.ru", "admin1", Role.ADMIN));
     }
 
     @Override
