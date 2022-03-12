@@ -24,7 +24,7 @@ public class JspMealController extends AbstractMealController {
     @GetMapping("/delete")
     public String delete(HttpServletRequest request) {
         super.delete(getId(request));
-        return "redirect:meals";
+        return "redirect:/meals";
     }
 
     @GetMapping()
@@ -41,8 +41,9 @@ public class JspMealController extends AbstractMealController {
     }
 
     @GetMapping("/update")
-    public void update(HttpServletRequest request, Model model) {
+    public String update(HttpServletRequest request, Model model) {
         model.addAttribute("meal", super.get(getId(request)));
+        return "mealForm";
     }
 
     @GetMapping("/filter")
@@ -62,12 +63,12 @@ public class JspMealController extends AbstractMealController {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
 
-        if (!request.getParameter("id").isEmpty()) {
-            super.update(meal, getId(request));
-        } else {
+        if (request.getParameter("id").isEmpty()) {
             super.create(meal);
+        } else {
+            super.update(meal, getId(request));
         }
-        return "redirect:meals";
+        return "redirect:/meals";
     }
 
     private int getId(HttpServletRequest request) {
