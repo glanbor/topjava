@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,11 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void create() {
-        User created = service.create(getNew());
-        int newId = created.id();
         User newUser = getNew();
+        User created = service.create(new User(newUser));
+        int newId = created.id();
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
-        USER_MATCHER.assertMatch(service.get(newId), newUser);
     }
 
     @Test
@@ -85,7 +85,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Test
     public void update() {
         User updated = getUpdated();
-        service.update(updated);
+        service.update(new User(updated));
         USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
     }
 
@@ -97,7 +97,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void createWithException() throws Exception {
-//        Assume.assumeTrue(isJpaOrDataJpa());
+        Assume.assumeTrue(isJpaOrDataJpa());
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "  ", "mail@yandex.ru", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "  ", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)));
