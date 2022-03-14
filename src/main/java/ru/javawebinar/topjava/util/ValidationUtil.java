@@ -10,6 +10,20 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
+//    private static final Validator validator;
+//
+//    static {
+//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+//        validator = factory.getValidator();
+//    }
+//
+//    public static <T> void validate(T bean) {
+//        Set<ConstraintViolation<T>> violations = validator.validate(bean);
+//        if (!violations.isEmpty()) {
+//            throw new ConstraintViolationException(violations);
+//        }
+//    }
+
     public static <T> T checkNotFoundWithId(T object, int id) {
         checkNotFoundWithId(object != null, id);
         return object;

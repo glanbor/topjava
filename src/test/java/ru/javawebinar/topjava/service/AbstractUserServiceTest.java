@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +56,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void delete() {
-        service.delete(USER_ID);
-        assertThrows(NotFoundException.class, () -> service.get(USER_ID));
+        service.delete(ADMIN_ID);
+        assertThrows(NotFoundException.class, () -> service.get(ADMIN_ID));
     }
 
     @Test
@@ -68,8 +67,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void get() {
-        User user = service.get(USER_ID);
-        USER_MATCHER.assertMatch(user, UserTestData.user);
+        User admin = service.get(ADMIN_ID);
+        USER_MATCHER.assertMatch(admin, UserTestData.admin);
     }
 
     @Test
@@ -98,7 +97,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void createWithException() throws Exception {
-        Assume.assumeTrue(isJpaOrDataJpa());
+//        Assume.assumeTrue(isJpaOrDataJpa());
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "  ", "mail@yandex.ru", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "  ", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)));
