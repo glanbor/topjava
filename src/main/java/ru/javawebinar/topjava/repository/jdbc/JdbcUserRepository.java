@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
+import ru.javawebinar.topjava.util.ValidationUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,6 +44,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
+        ValidationUtil.validate(user);
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
         if (user.isNew()) {
@@ -56,11 +58,8 @@ public class JdbcUserRepository implements UserRepository {
                     """, parameterSource) == 0) {
                 return null;
             }
-            List<Role> roles = getRoles(user);
-            if (roles.equals(user.getRoles())) {
                 deleteRoles(user);
                 insertRoles(user);
-            }
         }
         return user;
     }
@@ -74,8 +73,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User get(int id) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
-        User user = DataAccessUtils.singleResult(users);
-        return setRoles(user);
+        return setRoles(DataAccessUtils.singleResult(users));
     }
 
     @Override
@@ -131,13 +129,11 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     private User setRoles(User user) {
-        List<Role> roles = getRoles(user);
-        user.setRoles(roles);
+        if (user!=null) {
+            List<Role> roles = jdbcTemplate.query("SELECT * FROM user_roles WHERE user_id = ?",
+                    (rs, rowNum) -> Role.valueOf(rs.getString("role")), user.getId());
+            user.setRoles(roles);
+        }
         return user;
-    }
-
-    private List<Role> getRoles(User user) {
-        return jdbcTemplate.queryForList("SELECT * FROM user_roles WHERE user_id = ?",
-                Role.class, user.getId());
     }
 }
