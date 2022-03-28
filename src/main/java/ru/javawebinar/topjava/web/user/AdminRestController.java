@@ -29,10 +29,11 @@ public class AdminRestController extends AbstractUserController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/with-meals")
     public User getWithMeals(@PathVariable int id) {
         log.info("get with meals {}", id);
-        return service.getWithMeals(id);
+        User user = service.getWithMeals(id);
+        return user;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
