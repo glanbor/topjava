@@ -14,7 +14,7 @@
 <div class="jumbotron pt-4">
     <div class="container">
         <h3 class="text-center"><spring:message code="meal.title"/></h3>
-        <form method="get" id="filter">
+        <form id="filter">
             <div class="row">
                 <div class="col-auto">
                     <label for="startDate"><spring:message code="meal.startDate"/></label>
@@ -36,12 +36,24 @@
                     <input type="time" class="form-control" id="endTime" name="endTime">
                 </div>
             </div>
-            <br/>
-            <button class="btn btn-primary" onclick="applyFilters()">
-                <span class="fa fa-plus"></span>
-                <spring:message code="meal.filter"/>
-            </button>
         </form>
+        <br/>
+        <div class="row">
+            <div class="col-auto">
+                <button class="btn btn-danger" onclick="dropFilters()">
+                    <span class="fa fa-remove"></span>
+                    <spring:message code="common.cancel"/>
+                </button>
+            </div>
+
+            <div class="col-auto">
+                <button class="btn btn-primary" onclick="applyFilters()">
+                    <span class="fa fa-plus"></span>
+                    <spring:message code="meal.filter"/>
+                </button>
+            </div>
+        </div>
+
         <br/>
         <button class="btn btn-primary" onclick="add()">
             <span class="fa fa-plus"></span>

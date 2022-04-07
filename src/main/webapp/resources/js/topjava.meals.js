@@ -2,15 +2,26 @@ const mealAjaxUrl = "profile/meals/";
 
 // https://stackoverflow.com/a/5064235/548473
 const ctx = {
-    ajaxUrl: mealAjaxUrl
+    ajaxUrl: mealAjaxUrl,
 };
 
 function applyFilters() {
     $.ajax({
         type: "GET",
-        url: ctx.ajaxUrl + "filter",
+        url: mealAjaxUrl + "filter",
         data: $("#filter").serialize()
-    }).done(updateTable);
+    }).done(function (data) {
+        ctx.datatableApi.clear().rows.add(data).draw();
+        successNoty("filter");
+    });
+}
+
+function dropFilters() {
+    $("#filter")[0].reset();
+    $.get(mealAjaxUrl, function (data) {
+        ctx.datatableApi.clear().rows.add(data).draw();
+        successNoty("filter");
+    });
 }
 
 // $(document).ready(function () {
@@ -45,5 +56,6 @@ $(function () {
                 ]
             ]
         })
+
     );
 });

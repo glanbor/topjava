@@ -38,6 +38,11 @@ function updateTable() {
     });
 }
 
+function updateFiltered(data) {
+    ctx.datatableApi.clear().rows.add(data).draw();
+
+}
+
 function save() {
     $.ajax({
         type: "POST",
