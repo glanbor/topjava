@@ -25,8 +25,7 @@ public class AdminRestController extends AbstractUserController {
 
     @Override
     @GetMapping("/{id}")
-    public User get(@PathVariable int id) {
-        return super.get(id);
+    public User get(@PathVariable int id) {return super.get(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
